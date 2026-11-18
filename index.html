@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="卡卡西，成都前端开发者。记录 AI 应用、前端项目、技术思考与生活灵感。">
+  <meta property="og:title" content="卡卡西 · 前端开发者 / 成都">
+  <meta property="og:description" content="用代码打磨产品体验，也用歌声、旅行和美食给生活充电。">
+  <meta property="og:type" content="website">
+  <title>卡卡西 · 前端开发者 / 成都</title>
+  <style>
+    :root {
+      --paper: #f6f6f1;
+      --card: #fffefa;
+      --ink: #1e2823;
+      --muted: #737a70;
+      --line: #e6e8df;
+      --green: #37624e;
+      --green-dark: #254b39;
+      --lime: #dce9a7;
+      --peach: #f3dfd1;
+      --lavender: #e6e3f2;
+      --shadow: 0 18px 50px rgba(40, 55, 43, .07);
+      --sans: "Aptos", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --serif: "Iowan Old Style", "Baskerville", "Songti SC", serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); line-height: 1.65; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .shell { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { height: 80px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(47, 66, 52, .09); }
+    .brand { display: inline-flex; gap: 11px; align-items: center; font-weight: 700; letter-spacing: -.03em; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: #fff; background: var(--green); border-radius: 11px; font: 700 16px var(--serif); transform: rotate(-5deg); }
+    .brand-copy { display: grid; line-height: 1.12; }
+    .brand-copy small { margin-top: 4px; color: var(--muted); font: 500 9px var(--sans); letter-spacing: .15em; }
+    .nav { display: flex; align-items: center; gap: 34px; color: #5e665e; font-size: 13px; }
+    .nav a { transition: color .2s; }
+    .nav a:hover, .nav a:focus-visible { color: var(--green); }
+    .nav .nav-contact { padding: 10px 16px; color: white; background: var(--green); border-radius: 999px; }
+    .nav .nav-contact:hover { background: var(--green-dark); color: white; }
+    .menu-toggle { display: none; border: 0; background: transparent; font-size: 24px; cursor: pointer; }
+
+    .hero { min-height: 586px; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 72px; padding: 66px 0 76px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: .07em; }
+    .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 650px; margin: 19px 0 18px; font-size: clamp(42px, 5.4vw, 70px); line-height: 1.16; letter-spacing: -.06em; font-weight: 650; }
+    h1 em { color: var(--green); font-family: var(--serif); font-weight: 500; }
+    .hero-copy { max-width: 500px; margin-bottom: 27px; color: #687168; font-size: 16px; line-height: 1.9; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 0 19px; border: 1px solid var(--green); border-radius: 999px; background: var(--green); color: white; font-size: 13px; font-weight: 650; transition: transform .2s, background .2s; }
+    .button:hover { transform: translateY(-2px); background: var(--green-dark); }
+    .button.secondary { color: var(--green); background: transparent; }
+    .button.secondary:hover { background: #e9eee6; }
+    .hero-notes { display: flex; gap: 25px; margin-top: 37px; color: var(--muted); font-size: 11px; }
+    .hero-notes span { display: flex; align-items: center; gap: 7px; }
+    .hero-notes b { color: var(--ink); font-size: 12px; }
+
+    .portrait-wrap { position: relative; max-width: 376px; justify-self: center; width: 100%; }
+    .portrait-frame { position: relative; height: 410px; overflow: hidden; border-radius: 48% 48% 24px 24px; background: #e8e8e3; box-shadow: var(--shadow); }
+    .portrait-frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 56%, rgba(21, 32, 26, .18)); pointer-events: none; }
+    .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 27%; display: block; }
+    .portrait-label { position: absolute; z-index: 1; bottom: 20px; left: 23px; color: #fff; font-size: 9px; letter-spacing: .18em; }
+    .float-card { position: absolute; z-index: 2; display: flex; align-items: center; gap: 11px; padding: 12px 15px; border: 1px solid rgba(36, 57, 42, .07); border-radius: 14px; background: var(--card); box-shadow: 0 10px 32px rgba(39, 53, 44, .1); }
+    .float-card.one { top: 66px; left: -55px; }
+    .float-card.two { right: -40px; bottom: 51px; }
+    .float-icon { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 11px; background: var(--lime); font-size: 16px; }
+    .float-card.two .float-icon { background: var(--peach); }
+    .float-card strong { display: block; font-size: 12px; }
+    .float-card small { display: block; color: var(--muted); font-size: 10px; }
+    .orbit { position: absolute; z-index: -1; width: 430px; height: 430px; top: -10px; right: -27px; border: 1px solid #e5e8dd; border-radius: 50%; }
+    .orbit::after { content: "✳"; position: absolute; top: 33px; right: 39px; color: #a0ad76; font-size: 22px; }
+
+    .section { padding: 84px 0; border-top: 1px solid var(--line); }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 31px; }
+    .section-kicker { margin-bottom: 8px; color: var(--green); font-size: 10px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h2 { margin-bottom: 0; font-size: clamp(28px, 3.2vw, 39px); line-height: 1.24; letter-spacing: -.045em; }
+    .section-heading p { max-width: 390px; margin: 0; color: var(--muted); font-size: 13px; }
+    .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; }
+    .about-note { min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; padding: 31px 34px; border-radius: 20px; background: #e9eee5; }
+    .about-note blockquote { max-width: 570px; margin: 9px 0 24px; font: 500 clamp(21px, 2.5vw, 30px)/1.55 var(--serif); letter-spacing: -.025em; }
+    .about-note small { color: var(--muted); font-size: 11px; }
+    .profile-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .fact { min-height: 116px; padding: 19px; border: 1px solid var(--line); border-radius: 17px; background: var(--card); }
+    .fact .fact-icon { display: block; margin-bottom: 10px; font-size: 17px; }
+    .fact strong { display: block; font-size: 16px; }
+    .fact span { color: var(--muted); font-size: 11px; }
+
+    .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .project-card { position: relative; min-height: 284px; padding: 25px 24px 22px; overflow: hidden; border: 1px solid var(--line); border-radius: 19px; background: var(--card); transition: transform .22s, box-shadow .22s; }
+    .project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .project-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .project-symbol { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 14px; font-size: 20px; }
+    .project-card:nth-child(1) .project-symbol { background: var(--lavender); }
+    .project-card:nth-child(2) .project-symbol { background: var(--lime); }
+    .project-card:nth-child(3) .project-symbol { background: var(--peach); }
+    .project-no { color: #9ba198; font: 12px var(--serif); }
+    .project-card h3 { margin: 0 0 9px; font-size: 19px; letter-spacing: -.035em; }
+    .project-card p { min-height: 52px; margin: 0 0 18px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { padding: 5px 9px; border: 1px solid #e4e7df; border-radius: 999px; color: #657063; font-size: 10px; }
+
+    .writing-section { background: #edf0e9; }
+    .writing-section .section { border-top: 0; }
+    .writing-tools { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .filters { display: flex; gap: 7px; flex-wrap: wrap; }
+    .filter { padding: 8px 13px; border: 1px solid transparent; border-radius: 999px; color: #667064; background: transparent; font-size: 11px; cursor: pointer; }
+    .filter.active, .filter:hover { border-color: #d5ddcf; color: var(--green-dark); background: #fffefa; }
+    .search { display: flex; align-items: center; gap: 7px; margin-left: auto; padding: 8px 12px; border: 1px solid #dfe4da; border-radius: 999px; background: rgba(255,255,255,.55); }
+    .search input { width: 145px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 11px; }
+    .search input::placeholder { color: #899187; }
+    .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .article-card { min-height: 276px; display: flex; flex-direction: column; padding: 23px; border: 1px solid #e2e6dd; border-radius: 18px; background: var(--card); }
+    .article-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; color: #818a7d; font-size: 10px; }
+    .article-type { padding: 5px 9px; border-radius: 999px; color: var(--green); background: #edf2e8; }
+    .article-card h3 { margin: 0 0 10px; font-size: 17px; line-height: 1.55; letter-spacing: -.025em; }
+    .article-card p { margin-bottom: 19px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .read-link { margin-top: auto; padding: 0; border: 0; color: var(--green); background: transparent; font-size: 11px; font-weight: 700; text-align: left; cursor: pointer; }
+    .read-link span { display: inline-block; margin-left: 4px; transition: transform .2s; }
+    .read-link:hover span { transform: translateX(4px); }
+    .empty-state { display: none; padding: 34px; color: var(--muted); text-align: center; }
+
+    .life-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 19px; }
+    .life-feature { min-height: 250px; position: relative; display: flex; flex-direction: column; justify-content: end; padding: 29px; overflow: hidden; border-radius: 20px; background: linear-gradient(125deg, #dfe8d5 0%, #f1e8d9 100%); }
+    .life-feature::before, .life-feature::after { content: ""; position: absolute; border: 1px solid rgba(49, 86, 64, .19); border-radius: 50%; }
+    .life-feature::before { width: 260px; height: 260px; top: -110px; right: 10%; }
+    .life-feature::after { width: 170px; height: 170px; top: -65px; right: 20%; }
+    .life-feature .life-emoji { position: absolute; top: 56px; right: 20%; font-size: 58px; transform: rotate(8deg); }
+    .life-feature h3 { position: relative; margin: 0 0 7px; font: 500 27px var(--serif); }
+    .life-feature p { position: relative; max-width: 420px; margin: 0; color: #687168; font-size: 12px; }
+    .life-list { display: grid; gap: 12px; }
+    .life-item { display: flex; align-items: center; gap: 15px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+    .life-item .life-emoji { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: #f5eee2; font-size: 19px; }
+    .life-item:nth-child(2) .life-emoji { background: #f3e5e2; }
+    .life-item:nth-child(3) .life-emoji { background: #e9ebf5; }
+    .life-item strong { display: block; font-size: 13px; }
+    .life-item span { color: var(--muted); font-size: 10px; }
+
+    .contact { padding: 30px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-radius: 20px; color: #f8f8f2; background: var(--green-dark); }
+    .contact .section-kicker { color: #c9d9ac; }
+    .contact h2 { margin-bottom: 7px; font-size: clamp(24px, 3vw, 34px); }
+    .contact p { margin: 0; color: #d0d9d0; font-size: 12px; }
+    .contact .button { flex: 0 0 auto; color: var(--green-dark); border-color: #edf1df; background: #edf1df; }
+    .contact .button:hover { background: white; }
+    .contact .contact-placeholder { color: #edf1df; border-color: rgba(237, 241, 223, .4); background: transparent; cursor: default; }
+    .contact .contact-placeholder:hover { transform: none; background: transparent; }
+    .article-card[hidden] { display: none; }
+    footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px 0 34px; color: #858c81; font-size: 10px; }
+    footer a { color: var(--green); }
+
+    dialog { width: min(600px, calc(100% - 32px)); max-height: 82vh; padding: 0; overflow: auto; border: 1px solid var(--line); border-radius: 20px; color: var(--ink); background: var(--card); box-shadow: 0 25px 80px rgba(24, 39, 28, .22); }
+    dialog::backdrop { background: rgba(25, 38, 29, .4); backdrop-filter: blur(3px); }
+    .dialog-inner { padding: 32px; }
+    .dialog-close { float: right; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: transparent; font-size: 18px; cursor: pointer; }
+    .dialog-inner h2 { clear: both; margin: 28px 0 15px; font-size: 27px; }
+    .dialog-inner p { color: #626d63; font-size: 14px; line-height: 2; }
+    .dialog-inner .article-type { display: inline-block; margin-top: 12px; }
+    :focus-visible { outline: 3px solid #a8be83; outline-offset: 3px; }
+
+    @media (max-width: 800px) {
+      .hero { min-height: auto; grid-template-columns: 1fr .78fr; gap: 24px; padding: 56px 0 62px; }
+      .portrait-frame { height: 340px; }
+      .orbit { width: 340px; height: 340px; }
+      .float-card.one { left: -25px; }
+      .float-card.two { right: -13px; }
+      .projects, .article-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-card:last-child, .article-card:last-child { grid-column: span 2; }
+      .about-grid { grid-template-columns: 1fr; }
+      .life-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 34px, 480px); }
+      .topbar { height: 68px; }
+      .menu-toggle { display: block; }
+      .nav { display: none; position: absolute; z-index: 5; top: 62px; left: 17px; right: 17px; padding: 17px; flex-direction: column; align-items: stretch; gap: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); }
+      .nav.open { display: flex; }
+      .nav a { padding: 11px; }
+      .nav .nav-contact { margin-top: 6px; text-align: center; }
+      .hero { grid-template-columns: 1fr; gap: 44px; padding: 49px 0 58px; }
+      h1 { margin-top: 16px; font-size: 45px; }
+      .hero-copy { font-size: 14px; }
+      .hero-notes { gap: 17px; margin-top: 25px; }
+      .portrait-wrap { width: min(82%, 320px); margin: 0 auto; }
+      .portrait-frame { height: 340px; }
+      .orbit { width: 340px; height: 340px; right: -10px; }
+      .float-card.one { top: 45px; left: -41px; }
+      .float-card.two { right: -34px; bottom: 34px; }
+      .section { padding: 62px 0; }
+      .section-heading { align-items: start; flex-direction: column; gap: 12px; }
+      .about-note { min-height: 225px; padding: 24px; }
+      .profile-facts { gap: 9px; }
+      .fact { min-height: 105px; padding: 15px; }
+      .projects, .article-grid { grid-template-columns: 1fr; }
+      .project-card:last-child, .article-card:last-child { grid-column: auto; }
+      .project-card { min-height: auto; }
+      .project-card p { min-height: 0; }
+      .writing-tools { align-items: stretch; flex-direction: column; }
+      .search { margin-left: 0; }
+      .search input { width: 100%; }
+      .article-card { min-height: 238px; }
+      .life-feature { min-height: 230px; }
+      .contact { align-items: flex-start; flex-direction: column; padding: 25px; }
+      footer { flex-direction: column; gap: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+  <style>
+    :root {
+      --paper: #080b12; --card: rgba(17, 23, 34, .86); --ink: #f2f6f4;
+      --muted: #9aa6b5; --line: rgba(171, 196, 211, .15); --green: #80f2c2;
+      --green-dark: #43c99b; --lime: #c9ff6b; --peach: #ffad83; --lavender: #b9a4ff;
+      --shadow: 0 22px 70px rgba(0,0,0,.35);
+    }
+    body { background-color: #080b12; background-image: radial-gradient(ellipse at 12% 10%, rgba(52, 110, 130, .22), transparent 33%), radial-gradient(ellipse at 87% 37%, rgba(110, 72, 158, .16), transparent 32%); background-attachment: fixed; color: var(--ink); }
+    body::before { content: ""; position: fixed; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(rgba(102, 133, 149, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(102, 133, 149, .055) 1px, transparent 1px); background-size: 42px 42px; mask-image: linear-gradient(to bottom, black, transparent 92%); }
+    .shell { position: relative; z-index: 1; }
+    .topbar { border-color: var(--line); }
+    .brand-mark { color: #08110f; background: linear-gradient(135deg, #9bffda, #8fe9ff); border-radius: 11px; box-shadow: 0 0 24px rgba(109, 255, 215, .26); transform: none; }
+    .brand-copy small { color: #78889a; }
+    .nav { color: #aeb9c5; }
+    .nav a:hover, .nav a:focus-visible { color: var(--green); }
+    .nav .nav-contact, .button { color: #07110e; border-color: #9bffda; background: linear-gradient(115deg, #9bffda, #a8eaff); box-shadow: 0 8px 28px rgba(91, 242, 193, .16); }
+    .nav .nav-contact:hover, .button:hover { color: #07110e; background: #c5ffe9; }
+    .hero { min-height: 640px; gap: 44px; }
+    .eyebrow { color: #94f6ce; letter-spacing: .12em; }
+    .eyebrow::before { width: 25px; height: 2px; box-shadow: 0 0 10px currentColor; }
+    h1 { font-size: clamp(48px, 6vw, 78px); letter-spacing: -.065em; }
+    h1 em { color: #9bffda; background: linear-gradient(90deg, #9bffda, #a8eaff 65%, #c4aaff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-copy { color: #a0adba; }
+    .button.secondary { color: #dcf5ed; border-color: rgba(153, 255, 216, .42); background: rgba(17, 25, 35, .75); box-shadow: none; }
+    .button.secondary:hover { color: #fff; background: rgba(54, 91, 91, .4); }
+    .hero-notes { color: #78889a; }
+    .hero-notes b { color: #e8f7f2; }
+    .portrait-frame { height: 438px; border: 1px solid rgba(155, 255, 218, .27); border-radius: 28px 28px 94px 28px; background: #151c27; box-shadow: 0 0 0 7px rgba(141, 255, 219, .025), 0 25px 75px rgba(0,0,0,.48), 0 0 50px rgba(69, 206, 189, .11); }
+    .portrait-frame img { object-position: 50% 25%; filter: saturate(.82) contrast(1.04); }
+    .portrait-frame::after { background: linear-gradient(180deg, rgba(11,16,25,.03) 35%, rgba(8,12,19,.77)); }
+    .portrait-label { color: #d9f5ea; }
+    .float-card { border-color: rgba(161, 225, 216, .2); color: #edf7f5; background: rgba(18, 27, 38, .82); box-shadow: 0 14px 42px rgba(0,0,0,.35); backdrop-filter: blur(14px); }
+    .float-card.one { animation: float-note 6.5s ease-in-out infinite; }
+    .float-card.two { animation: float-note 7.2s ease-in-out -2.4s infinite; }
+    @keyframes float-note { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+    .float-card small { color: #9baab8; }
+    .float-icon { color: #0b1510; background: #b6ff77; }
+    .float-card.two .float-icon { color: #1d1023; background: #d1b8ff; }
+    .orbit { border-color: rgba(146, 255, 218, .13); }
+    .orbit::after { color: #a9ffe0; text-shadow: 0 0 15px #83f2ce; }
+    .section { border-color: var(--line); }
+    .section-kicker { color: #90eac9; }
+    .section-heading p { color: #9aa6b5; }
+    .about-note { border: 1px solid rgba(144, 234, 201, .18); background: linear-gradient(140deg, rgba(32, 57, 62, .84), rgba(20, 28, 39, .88)); }
+    .about-note blockquote { color: #eaf4ef; }
+    .about-note small { color: #9facb6; }
+    .profile-facts { gap: 13px; }
+    .fact, .project-card, .article-card, .life-item { border-color: var(--line); color: var(--ink); background: linear-gradient(150deg, rgba(21, 29, 42, .92), rgba(14, 19, 29, .88)); box-shadow: inset 0 1px 0 rgba(255,255,255,.025); }
+    .fact { min-height: 116px; }
+    .fact span { color: #96a4b1; }
+    .fact strong { color: #f1f8f4; }
+    .project-card { min-height: 284px; }
+    .project-card:hover { border-color: rgba(142, 255, 211, .42); box-shadow: 0 18px 55px rgba(0,0,0,.32), 0 0 28px rgba(75, 222, 181, .08); }
+    .project-card:nth-child(1) .project-symbol { color: #d9d0ff; background: rgba(157, 128, 255, .2); }
+    .project-card:nth-child(2) .project-symbol { color: #d5ff9c; background: rgba(178, 255, 103, .16); }
+    .project-card:nth-child(3) .project-symbol { color: #ffc19e; background: rgba(255, 158, 108, .16); }
+    .project-no { color: #748397; }
+    .project-card p, .article-card p { color: #9ba8b5; }
+    .tag { color: #aebbc4; border-color: rgba(177, 203, 213, .18); background: rgba(255,255,255,.025); }
+    .writing-section { background: linear-gradient(180deg, rgba(18, 25, 37, .83), rgba(9, 13, 21, .54)); border-block: 1px solid var(--line); }
+    .filter { color: #9ba8b5; }
+    .filter.active, .filter:hover { color: #baffdf; border-color: rgba(142, 255, 211, .28); background: rgba(73, 127, 117, .17); }
+    .search { border-color: rgba(171,196,211,.2); background: rgba(11, 16, 24, .78); }
+    .search input { color: #f2f6f4; }
+    .search input::placeholder { color: #7f8d9b; }
+    .article-meta { color: #7f8d9b; }
+    .article-type { color: #aef8d7; background: rgba(91, 190, 151, .13); }
+    .article-card { min-height: 276px; }
+    .article-card:hover { border-color: rgba(147, 232, 201, .38); }
+    .read-link { color: #9af4ce; }
+    .empty-state { color: #a0adba; }
+    .life-feature { border: 1px solid rgba(152, 255, 221, .21); background: radial-gradient(circle at 76% 25%, rgba(130,255,216,.3), transparent 26%), linear-gradient(125deg, #15383d 0%, #202946 56%, #302546 100%); }
+    .life-feature::before, .life-feature::after { border-color: rgba(166, 255, 221, .24); }
+    .life-feature h3 { color: #f2fff9; }
+    .life-feature p { color: #b4c7c5; }
+    .life-item .life-emoji, .life-item:nth-child(2) .life-emoji, .life-item:nth-child(3) .life-emoji { background: rgba(141, 255, 213, .11); }
+    .life-item span { color: #91a0af; }
+    .contact { border: 1px solid rgba(167, 255, 223, .28); background: radial-gradient(ellipse at 85% 0%, rgba(76, 186, 178, .3), transparent 42%), linear-gradient(115deg, #142b33, #1c2036 60%, #22213d); box-shadow: 0 20px 55px rgba(0,0,0,.24); }
+    .contact .section-kicker { color: #97f1cf; }
+    .contact p { color: #b1c2c9; }
+    .contact .button { color: #07110e; border-color: #9bffda; background: linear-gradient(115deg, #9bffda, #a8eaff); }
+    .contact .contact-placeholder { color: #c3d5d5; border-color: rgba(195,213,213,.28); background: rgba(10,17,26,.22); }
+    .contact .contact-placeholder:hover { background: rgba(10,17,26,.22); }
+    footer { color: #778593; }
+    footer a { color: #9af4ce; }
+    dialog { color: var(--ink); border-color: var(--line); background: #111824; }
+    .dialog-close { color: #eaf4ef; border-color: var(--line); }
+    .dialog-inner p { color: #aebbc4; }
+    .stack-strip { display: flex; align-items: center; gap: 22px; margin-top: 16px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 16px; background: rgba(13, 19, 29, .75); }
+    .stack-label { flex: 0 0 auto; color: #7c91a0; font: 700 9px var(--sans); letter-spacing: .17em; }
+    .stack-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stack-list span { padding: 6px 11px; color: #d1f6e8; border: 1px solid rgba(146, 255, 218, .18); border-radius: 999px; background: rgba(111, 209, 173, .07); font: 11px var(--sans); }
+    .social-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+    .social-links a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 13px; color: #e8f6ef; border: 1px solid rgba(181, 223, 212, .2); border-radius: 12px; background: rgba(9, 15, 24, .3); font-size: 12px; transition: border-color .2s, transform .2s; }
+    .social-links a:hover { transform: translateY(-2px); border-color: rgba(155,255,218,.65); }
+    .contact-info { display: flex; flex-direction: column; align-items: flex-end; }
+    @media (max-width: 600px) {
+      .stack-strip { align-items: flex-start; flex-direction: column; gap: 11px; }
+      .contact-info { align-items: flex-start; }
+      .nav { border-color: var(--line); background: #111824; }
+      .menu-toggle { color: #e8f6ef; }
+      .hero { gap: 42px; }
+      .portrait-frame { height: 350px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .float-card.one, .float-card.two { animation: none; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="回到首页">
+        <span class="brand-mark">K/</span>
+        <span class="brand-copy">卡卡西<small>FRONT-END · CHENGDU</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="打开导航" aria-expanded="false">☰</button>
+      <nav class="nav" id="mainNav" aria-label="主导航">
+        <a href="#about">关于我</a>
+        <a href="#projects">项目经历</a>
+        <a href="#writing">文章记录</a>
+        <a href="#life">生活片段</a>
+        <a class="nav-contact" href="#contact">联系我 ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div>
+          <span class="eyebrow">FRONT-END DEVELOPER · CHENGDU</span>
+          <h1>你好，我是<br><em>卡卡西。</em></h1>
+          <p class="hero-copy">成都前端开发者，4 年经验。参与过 AI 智能分析、AI 粮仓数字人、小程序与 CRM 后台项目。用代码打磨产品体验，也用歌声、旅行和美食给生活充电。</p>
+          <div class="hero-actions">
+            <a class="button" href="#projects">看看我的项目 <span>↘</span></a>
+            <a class="button secondary" href="#writing">读一些记录 <span>↗</span></a>
+          </div>
+          <div class="hero-notes">
+            <span><b>04</b> YEARS BUILDING</span>
+            <span><b>AI</b> PRODUCT EXPERIENCE</span>
+            <span><b>CD</b> CHENGDU, CN</span>
+          </div>
+        </div>
+        <div class="portrait-wrap" aria-label="个人照片">
+          <div class="orbit"></div>
+          <div class="portrait-frame">
+            <img src="white_background_portrait.jpg" alt="个人白底照片">
+            <span class="portrait-label">BUILD WITH CARE · LIVE WITH CURIOSITY</span>
+          </div>
+          <div class="float-card one"><span class="float-icon">✦</span><span><strong>持续学习</strong><small>把好奇心带进代码</small></span></div>
+          <div class="float-card two"><span class="float-icon">♫</span><span><strong>下班之后</strong><small>唱歌 · 旅行 · 美食</small></span></div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-heading">
+          <div><div class="section-kicker">A LITTLE ABOUT ME</div><h2>关于我</h2></div>
+          <p>在业务逻辑、前端实现与产品体验之间寻找更好的平衡点。</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-note">
+            <div><span class="eyebrow">HOW I BUILD</span><blockquote>“把复杂留给代码，把清晰留给使用者。”</blockquote></div>
+            <small>持续探索前端工程、智能应用与更顺手的产品体验。</small>
+          </div>
+          <div class="profile-facts">
+            <div class="fact"><span class="fact-icon">⌘</span><strong>前端开发</strong><span>4 年项目经验</span></div>
+            <div class="fact"><span class="fact-icon">⌖</span><strong>成都 · 中国</strong><span>生活与工作的城市</span></div>
+            <div class="fact"><span class="fact-icon">◷</span><strong>28 岁 · 172 cm</strong><span>保持好奇，继续成长</span></div>
+            <div class="fact"><span class="fact-icon">♡</span><strong>热爱生活</strong><span>唱歌 · 旅行 · 美食</span></div>
+          </div>
+        </div>
+        <div class="stack-strip"><span class="stack-label">TECH STACK</span><div class="stack-list"><span>Python</span><span>Vue</span><span>React</span><span>MySQL</span><span>Mini Programs</span><span>AI Products</span></div></div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-heading">
+          <div><div class="section-kicker">SELECTED WORK</div><h2>做过的项目</h2></div>
+          <p>从数据分析到业务管理，参与不同类型产品的前端开发与交付。</p>
+        </div>
+        <div class="projects">
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">◉</span><span class="project-no">01 / AI</span></div>
+            <h3>AI 智能分析系统</h3>
+          <p>参与 AI 分析产品前端建设，呈现数据与智能洞察，帮助用户更直观地理解分析结果。</p>
+            <div class="tags"><span class="tag">AI 应用</span><span class="tag">数据可视化</span><span class="tag">Web</span></div>
+          </article>
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">✳</span><span class="project-no">02 / DIGITAL</span></div>
+            <h3>AI 粮仓数字人系统</h3>
+          <p>参与 AI 粮仓数字人系统开发，探索智能交互在粮仓数字化场景中的呈现方式。</p>
+            <div class="tags"><span class="tag">数字人</span><span class="tag">智慧农业</span><span class="tag">Web</span></div>
+          </article>
+          <article class="project-card">
+            <div class="project-top"><span class="project-symbol">▧</span><span class="project-no">03 / BUSINESS</span></div>
+            <h3>小程序与 CRM 后台</h3>
+          <p>参与小程序与 CRM 后台开发，覆盖移动端用户体验和日常业务管理流程。</p>
+            <div class="tags"><span class="tag">小程序</span><span class="tag">CRM</span><span class="tag">业务系统</span></div>
+          </article>
+        </div>
+      </section>
+
+      <div class="writing-section" id="writing">
+        <section class="section shell">
+          <div class="section-heading">
+            <div><div class="section-kicker">NOTES & THOUGHTS</div><h2>文章记录</h2></div>
+            <p>关于前端实践、产品体验，以及在项目里慢慢形成的想法。</p>
+          </div>
+          <div class="writing-tools">
+            <div class="filters" role="group" aria-label="文章分类筛选">
+              <button class="filter active" data-filter="全部">全部</button>
+              <button class="filter" data-filter="项目思考">项目思考</button>
+              <button class="filter" data-filter="前端实践">前端实践</button>
+              <button class="filter" data-filter="生活随笔">生活随笔</button>
+            </div>
+            <label class="search"><span aria-hidden="true">⌕</span><input id="articleSearch" type="search" placeholder="搜索文章" aria-label="搜索文章"></label>
+          </div>
+          <div class="article-grid" id="articleGrid">
+            <article class="article-card" data-category="项目思考" data-search="ai 智能分析 数据结果 可读性 洞察 交互">
+              <div class="article-meta"><span class="article-type">项目思考</span><span>阅读约 3 分钟</span></div>
+              <h3>AI 分析页面，如何让结果更容易被理解？</h3>
+              <p>模型给出答案只是开始。把结论、依据与下一步放在合适的位置，才能让洞察真正进入工作流。</p>
+              <button class="read-link" data-article="ai">继续阅读 <span>→</span></button>
+            </article>
+            <article class="article-card" data-category="前端实践" data-search="后台系统 crm 表格 交互 信息密度 界面">
+              <div class="article-meta"><span class="article-type">前端实践</span><span>阅读约 4 分钟</span></div>
+              <h3>做后台界面时，我会先理清这三件事</h3>
+              <p>面对复杂表格和很多操作入口，先厘清用户目标、信息层级和反馈状态，界面才不会越做越挤。</p>
+              <button class="read-link" data-article="admin">继续阅读 <span>→</span></button>
+            </article>
+            <article class="article-card" data-category="生活随笔" data-search="旅行 美食 唱歌 生活 灵感 周末">
+              <div class="article-meta"><span class="article-type">生活随笔</span><span>阅读约 2 分钟</span></div>
+              <h3>把周末留给路上，也留给一顿好吃的</h3>
+              <p>离开熟悉的日常一小会儿，听听新城市的声音，常常能把好心情和新点子一起带回来。</p>
+              <button class="read-link" data-article="weekend">继续阅读 <span>→</span></button>
+            </article>
+          </div>
+          <div class="empty-state" id="emptyState">没有找到匹配的文章，试试其他关键词吧。</div>
+        </section>
+      </div>
+
+      <section class="section" id="life">
+        <div class="section-heading">
+          <div><div class="section-kicker">OFF THE SCREEN</div><h2>生活片段</h2></div>
+          <p>代码之外，也有值得认真体验和记下来的小事。</p>
+        </div>
+        <div class="life-grid">
+          <div class="life-feature"><span class="life-emoji">🗺️</span><h3>偶尔出发，常常发现。</h3><p>旅行让我换个角度观察世界。路上的风景、陌生街巷和一顿当地美食，都是生活给的小惊喜。</p></div>
+          <div class="life-list">
+            <div class="life-item"><span class="life-emoji">🎤</span><div><strong>唱歌</strong><span>给日常加一点节奏</span></div></div>
+            <div class="life-item"><span class="life-emoji">✈️</span><div><strong>旅行</strong><span>收集新的风景和故事</span></div></div>
+            <div class="life-item"><span class="life-emoji">🍜</span><div><strong>美食</strong><span>认真吃饭也是生活灵感</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div><div class="section-kicker">SAY HELLO</div><h2>一起聊聊有意思的产品。</h2><p>欢迎交流前端、AI 应用，或者下一段旅行的美食清单。</p></div>
+        <div class="contact-info"><div class="social-links"><a href="mailto:1175560161@qq.com">✉ <span>1175560161@qq.com</span></a><a href="https://github.com/kakaxi07" target="_blank" rel="noreferrer">↗ <span>github.com/kakaxi07</span></a></div></div>
+      </section>
+    </main>
+    <footer><span>© 2026 卡卡西 · Chengdu, China · Built with curiosity.</span><a href="#home">回到顶部 ↑</a></footer>
+  </div>
+
+  <dialog id="articleDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-inner"><button class="dialog-close" aria-label="关闭">×</button><span class="article-type" id="dialogCategory"></span><h2 id="dialogTitle"></h2><div id="dialogBody"></div></div>
+  </dialog>
+
+  <script>
+    const articles = {
+      ai: {
+        category: '项目思考', title: 'AI 分析页面，如何让结果更容易被理解？',
+        paragraphs: [
+          '模型生成内容很快，但用户真正需要的是看懂结果，并知道接下来可以做什么。设计分析页面时，我会先想清楚：结论是什么、它依据什么、用户下一步可能采取什么行动。',
+          '把结论放在容易找到的位置，再用简洁的图表或文字解释关键依据。对于不确定的信息，也要用合适的方式表达边界，避免让界面看起来比结果本身更确定。',
+          '最后别忘了操作后的反馈。用户调整条件、追问问题或导出结果时，清楚的状态提示会让整个分析过程更连贯。好的呈现方式，能帮助智能能力自然地融入工作。'
+        ]
+      },
+      admin: {
+        category: '前端实践', title: '做后台界面时，我会先理清这三件事',
+        paragraphs: [
+          '第一，用户来这个页面要完成什么任务？把高频目标和关键动作找出来，页面结构就有了主次。',
+          '第二，信息之间是什么关系？筛选项、列表字段和详情内容应该围绕同一套业务逻辑组织。信息密度高时，分组、留白和一致的对齐方式，比单纯缩小字号更有效。',
+          '第三，操作之后会发生什么？加载、空数据、校验失败和成功反馈都属于界面的一部分。把这些状态提前考虑好，用户才能知道系统正在做什么，也更容易放心地完成任务。'
+        ]
+      },
+      weekend: {
+        category: '生活随笔', title: '把周末留给路上，也留给一顿好吃的',
+        paragraphs: [
+          '喜欢旅行的一点，是它会让熟悉的节奏暂时慢下来。走一条没走过的街，看看当地人怎么生活，很多小细节都能让人记很久。',
+          '行程不用排得太满。留一点空白给偶然发现的咖啡店、路边摊，或者一家闻起来很香的小馆子。比起打卡清单，有时最好的回忆只是刚好遇见。',
+          '回到日常后，带回来的不只是照片，也可能是一点新鲜感。下一次出发，就从想吃的一道菜或想听的一首歌开始吧。'
+        ]
+      }
+    };
+    const dialog = document.querySelector('#articleDialog');
+    const closeDialog = () => dialog.close();
+    document.querySelectorAll('.read-link').forEach(button => button.addEventListener('click', () => {
+      const article = articles[button.dataset.article];
+      document.querySelector('#dialogCategory').textContent = article.category;
+      document.querySelector('#dialogTitle').textContent = article.title;
+      const body = document.querySelector('#dialogBody');
+      body.replaceChildren(...article.paragraphs.map(text => { const p = document.createElement('p'); p.textContent = text; return p; }));
+      dialog.showModal();
+    }));
+    document.querySelector('.dialog-close').addEventListener('click', closeDialog);
+    dialog.addEventListener('click', event => { if (event.target === dialog) closeDialog(); });
+
+    let selectedCategory = '全部';
+    const searchInput = document.querySelector('#articleSearch');
+    const cards = [...document.querySelectorAll('.article-card')];
+    const updateArticles = () => {
+      const term = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach(card => {
+        const matchesCategory = selectedCategory === '全部' || card.dataset.category === selectedCategory;
+        const matchesSearch = !term || (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(term);
+        card.hidden = !(matchesCategory && matchesSearch);
+        if (!card.hidden) visible++;
+      });
+      document.querySelector('#emptyState').style.display = visible ? 'none' : 'block';
+    };
+    document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => {
+      document.querySelector('.filter.active').classList.remove('active');
+      button.classList.add('active');
+      selectedCategory = button.dataset.filter;
+      updateArticles();
+    }));
+    searchInput.addEventListener('input', updateArticles);
+
+    const menuToggle = document.querySelector('#menuToggle');
+    const mainNav = document.querySelector('#mainNav');
+    menuToggle.addEventListener('click', () => {
+      const open = mainNav.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.textContent = open ? '×' : '☰';
+    });
+    mainNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mainNav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+  </script>
+</body>
+</html>
+
